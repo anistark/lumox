@@ -1,13 +1,13 @@
 # Lumox
 
-A TypeScript SDK for local-first encrypted chat storage with optional IPFS backup capabilities.
+A TypeScript SDK for local-first encrypted storage with optional IPFS backup capabilities.
 
 [![npm version](https://img.shields.io/npm/v/lumox.svg)](https://www.npmjs.com/package/lumox)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Features
 
-- **Local-First Storage**: Encrypted chat data stored locally using SQLite compiled to WebAssembly
+- **Local-First Storage**: Encrypted data stored locally using SQLite compiled to WebAssembly
 - **Strong Encryption**: End-to-end encryption using the WebCrypto API
 - **Cross-Platform**: Works in browsers, Node.js, and React Native
 - **Modular Design**: Easily integrate specific components or use the full SDK

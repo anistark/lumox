@@ -44,9 +44,11 @@ format:
     @echo "Formatting code..."
     pnpm prettier --write "src/**/*.ts" "examples/**/*.ts" "tests/**/*.ts"
 
-# Lint code with ESLint
+# Lint code with ESLint (using eslint.config.js format)
 lint:
     @echo "Linting code..."
+    # Check if eslint.config.js exists, otherwise prompt to create it
+    if [ ! -f "eslint.config.js" ]; then echo "eslint.config.js not found. Run 'just setup-dev' first."; exit 1; fi
     pnpm eslint "src/**/*.ts" "examples/**/*.ts" "tests/**/*.ts"
 
 # Fix lint issues automatically
@@ -87,10 +89,15 @@ info:
     @echo "Node version: `node --version`"
     @echo "PNPM version: `pnpm --version`"
 
-# Install dependencies needed for development
+# Install dependencies needed for development and create config files
 setup-dev:
     @echo "Setting up development environment..."
     pnpm add -D typescript tsup jest ts-jest @types/jest prettier eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-prettier
+    @echo "Creating ESLint config..."
+    [ -f "eslint.config.js" ] || echo "import tsPlugin from '@typescript-eslint/eslint-plugin';\nimport tsParser from '@typescript-eslint/parser';\nimport prettierConfig from 'eslint-config-prettier';\n\nexport default [\n  {\n    files: ['**/*.ts'],\n    languageOptions: {\n      parser: tsParser,\n      parserOptions: {\n        ecmaVersion: 2022,\n        sourceType: 'module',\n      },\n    },\n    plugins: {\n      '@typescript-eslint': tsPlugin,\n    },\n    rules: {\n      ...tsPlugin.configs.recommended.rules,\n      // Custom rules here\n    },\n  },\n  prettierConfig,\n];" > eslint.config.js
+    @echo "Creating Prettier config..."
+    [ -f ".prettierrc" ] || echo '{\n  "singleQuote": true,\n  "semi": true,\n  "tabWidth": 2,\n  "printWidth": 100,\n  "trailingComma": "es5"\n}' > .prettierrc
+    @echo "Development environment setup complete!"
 
 # Prepare a commit (lint, format, test)
 precommit: format lint test
