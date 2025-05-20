@@ -15,7 +15,7 @@ interface Global {
 // Mock crypto for Node.js environment in tests
 if (!global.crypto) {
   global.crypto = {
-    getRandomValues: function(buffer: Uint8Array): Uint8Array {
+    getRandomValues: function (buffer: Uint8Array): Uint8Array {
       return Buffer.from(buffer.map(() => Math.floor(Math.random() * 256)));
     },
     subtle: {
