@@ -10,7 +10,10 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "lib": ["ES2020", "DOM"]
+    "lib": ["ES2020", "DOM"],
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noImplicitReturns": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

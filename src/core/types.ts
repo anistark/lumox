@@ -2,6 +2,7 @@ export type MessageId = string;
 export type UserId = string;
 export type Timestamp = number;
 export type EncryptedData = string;
+export type MessageMetadata = Record<string, unknown>;
 
 export interface Message {
   id: MessageId;
@@ -9,7 +10,7 @@ export interface Message {
   receiverId: UserId;
   content: string;
   timestamp: Timestamp;
-  metadata?: Record<string, any>;
+  metadata?: MessageMetadata;
 }
 
 export interface EncryptedMessage {
@@ -18,5 +19,5 @@ export interface EncryptedMessage {
   receiverId: UserId;
   encryptedContent: EncryptedData;
   timestamp: Timestamp;
-  metadata?: Record<string, any>;
+  metadata?: MessageMetadata;
 }

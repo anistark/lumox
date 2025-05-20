@@ -1,13 +1,13 @@
 import { CryptoError } from '../core/errors';
 
 /**
- * Generates a random string of specified length 
+ * Generates a random string of specified length
  * (useful for nonces, salts, etc.)
  */
 export function generateRandomString(length: number): string {
   const array = new Uint8Array(length);
   crypto.getRandomValues(array);
-  return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+  return Array.from(array, (byte) => byte.toString(16).padStart(2, '0')).join('');
 }
 
 /**
@@ -19,7 +19,7 @@ export async function sha256(data: string): Promise<string> {
     const encodedData = encoder.encode(data);
     const hashBuffer = await crypto.subtle.digest('SHA-256', encodedData);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+    return hashArray.map((byte) => byte.toString(16).padStart(2, '0')).join('');
   } catch (error) {
     throw new CryptoError(`SHA-256 hashing failed: ${(error as Error).message}`);
   }
@@ -67,8 +67,8 @@ export function uint8ArrayToBase64(array: Uint8Array): string {
  * This is useful for deriving encryption keys from passwords
  */
 export async function deriveKeyFromPassword(
-  password: string, 
-  salt: string, 
+  password: string,
+  salt: string,
   iterations: number = 100000
 ): Promise<CryptoKey> {
   try {
@@ -76,28 +76,24 @@ export async function deriveKeyFromPassword(
     const encoder = new TextEncoder();
     const passwordBytes = encoder.encode(password);
     const saltBytes = encoder.encode(salt);
-    
+
     // Import the password as a key
-    const baseKey = await crypto.subtle.importKey(
-      'raw',
-      passwordBytes,
-      { name: 'PBKDF2' },
-      false,
-      ['deriveKey']
-    );
-    
+    const baseKey = await crypto.subtle.importKey('raw', passwordBytes, { name: 'PBKDF2' }, false, [
+      'deriveKey',
+    ]);
+
     // Derive an AES-GCM key using PBKDF2
     return crypto.subtle.deriveKey(
       {
         name: 'PBKDF2',
         salt: saltBytes,
         iterations,
-        hash: 'SHA-256'
+        hash: 'SHA-256',
       },
       baseKey,
       {
         name: 'AES-GCM',
-        length: 256
+        length: 256,
       },
       true,
       ['encrypt', 'decrypt']
@@ -116,7 +112,7 @@ export async function generateSymmetricKey(): Promise<CryptoKey> {
     return crypto.subtle.generateKey(
       {
         name: 'AES-GCM',
-        length: 256
+        length: 256,
       },
       true,
       ['encrypt', 'decrypt']
@@ -134,7 +130,7 @@ export async function generateKeyPair(): Promise<CryptoKeyPair> {
     return crypto.subtle.generateKey(
       {
         name: 'ECDH',
-        namedCurve: 'P-256'
+        namedCurve: 'P-256',
       },
       true,
       ['deriveKey']
@@ -156,12 +152,12 @@ export async function deriveSharedSecret(
     return crypto.subtle.deriveKey(
       {
         name: 'ECDH',
-        public: publicKey
+        public: publicKey,
       },
       privateKey,
       {
         name: 'AES-GCM',
-        length: 256
+        length: 256,
       },
       true,
       ['encrypt', 'decrypt']
@@ -192,14 +188,14 @@ export async function importKeyFromJwk(
 ): Promise<CryptoKey> {
   try {
     const alg = jwk.alg || algorithm;
-    
+
     if (alg === 'ECDH') {
       return crypto.subtle.importKey(
         'jwk',
         jwk,
         {
           name: 'ECDH',
-          namedCurve: jwk.crv || 'P-256'
+          namedCurve: jwk.crv || 'P-256',
         },
         true,
         keyUsages
@@ -210,7 +206,7 @@ export async function importKeyFromJwk(
         jwk,
         {
           name: 'AES-GCM',
-          length: (jwk.k?.length || 32) * 8
+          length: (jwk.k?.length || 32) * 8,
         },
         true,
         keyUsages
@@ -232,14 +228,14 @@ export async function keyFromSignature(signature: string): Promise<CryptoKey> {
     // First hash the signature to ensure proper length and format
     const hash = await sha256(signature);
     const signatureBytes = stringToUint8Array(hash);
-    
+
     // Import as raw key
     return crypto.subtle.importKey(
       'raw',
       signatureBytes,
       {
         name: 'AES-GCM',
-        length: 256
+        length: 256,
       },
       true,
       ['encrypt', 'decrypt']
