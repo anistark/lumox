@@ -14,6 +14,10 @@ const config: Config = {
   },
   setupFilesAfterEnv: ['./tests/setup.ts'],
   testMatch: ['**/tests/**/*.test.ts'],
+  // Add this to enable Jest globals in ESM
+  testEnvironmentOptions: {
+    customExportConditions: ['node', 'node-addons'],
+  },
 };
 
 export default config;

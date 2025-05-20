@@ -1,18 +1,22 @@
 import { ConsoleLogger, LogLevel, NullLogger } from '../src/core/logger';
+import { jest } from '@jest/globals';
+
+// Add proper type for SpyInstance
+type SpyInstance = ReturnType<typeof jest.spyOn>;
 
 describe('Logger', () => {
   describe('ConsoleLogger', () => {
-    let mockDebug: jest.SpyInstance;
-    let mockInfo: jest.SpyInstance;
-    let mockWarn: jest.SpyInstance;
-    let mockError: jest.SpyInstance;
+    let mockDebug: SpyInstance;
+    let mockInfo: SpyInstance;
+    let mockWarn: SpyInstance;
+    let mockError: SpyInstance;
 
     beforeEach(() => {
-      // Create spies on console methods
-      mockDebug = jest.spyOn(console, 'debug').mockImplementation();
-      mockInfo = jest.spyOn(console, 'info').mockImplementation();
-      mockWarn = jest.spyOn(console, 'warn').mockImplementation();
-      mockError = jest.spyOn(console, 'error').mockImplementation();
+      // Create spies on console methods with a mock implementation function
+      mockDebug = jest.spyOn(console, 'debug').mockImplementation(() => {});
+      mockInfo = jest.spyOn(console, 'info').mockImplementation(() => {});
+      mockWarn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      mockError = jest.spyOn(console, 'error').mockImplementation(() => {});
     });
 
     afterEach(() => {
@@ -51,11 +55,10 @@ describe('Logger', () => {
       // Call log method
       logger.info('Info message');
 
-      // Verify that prefix was included in log message
-      expect(mockInfo).toHaveBeenCalledWith(
-        expect.stringContaining('[TestLogger]'),
-        expect.anything()
-      );
+      // The logger prefixes the message, rather than passing as separate arguments
+      // So the full string is the first argument
+      const callArgs = mockInfo.mock.calls[0];
+      expect(callArgs[0]).toContain('[TestLogger]');
     });
 
     it('should include timestamps when enabled', () => {
@@ -68,9 +71,10 @@ describe('Logger', () => {
       // Call log method
       logger.info('Info message');
 
-      // Verify that timestamp was included in log message
+      // Check that the timestamp format is included in the first argument
       const isoDateRegex = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
-      expect(mockInfo).toHaveBeenCalledWith(expect.stringMatching(isoDateRegex), expect.anything());
+      const callArgs = mockInfo.mock.calls[0];
+      expect(callArgs[0]).toMatch(isoDateRegex);
     });
 
     it('should allow changing log level at runtime', () => {
@@ -97,17 +101,17 @@ describe('Logger', () => {
   });
 
   describe('NullLogger', () => {
-    let mockDebug: jest.SpyInstance;
-    let mockInfo: jest.SpyInstance;
-    let mockWarn: jest.SpyInstance;
-    let mockError: jest.SpyInstance;
+    let mockDebug: SpyInstance;
+    let mockInfo: SpyInstance;
+    let mockWarn: SpyInstance;
+    let mockError: SpyInstance;
 
     beforeEach(() => {
-      // Create spies on console methods
-      mockDebug = jest.spyOn(console, 'debug').mockImplementation();
-      mockInfo = jest.spyOn(console, 'info').mockImplementation();
-      mockWarn = jest.spyOn(console, 'warn').mockImplementation();
-      mockError = jest.spyOn(console, 'error').mockImplementation();
+      // Create spies on console methods with a mock implementation function
+      mockDebug = jest.spyOn(console, 'debug').mockImplementation(() => {});
+      mockInfo = jest.spyOn(console, 'info').mockImplementation(() => {});
+      mockWarn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      mockError = jest.spyOn(console, 'error').mockImplementation(() => {});
     });
 
     afterEach(() => {

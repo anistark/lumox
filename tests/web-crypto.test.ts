@@ -2,6 +2,12 @@ import { WebCryptoProvider } from '../src/crypto/web-crypto';
 import { CryptoProvider } from '../src/core/interfaces';
 import { CryptoError, LumoxErrorCode } from '../src/core/errors';
 import { ConsoleLogger, LogLevel } from '../src/core/logger';
+import { jest } from '@jest/globals';
+
+// Define a global fail function that might be used in tests
+function fail(message: string): never {
+  throw new Error(message);
+}
 
 describe('WebCryptoProvider', () => {
   let crypto: CryptoProvider;

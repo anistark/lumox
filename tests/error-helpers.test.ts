@@ -10,6 +10,7 @@ import {
   formatError,
   getUserFriendlyErrorMessage,
 } from '../src/core/error-helpers';
+import { jest } from '@jest/globals';
 
 describe('Error Helpers', () => {
   describe('isLumoxErrorCode', () => {
