@@ -2,15 +2,18 @@
 
 A TypeScript SDK for local-first encrypted storage with optional IPFS backup capabilities.
 
-[![npm version](https://img.shields.io/npm/v/lumox.svg)](https://www.npmjs.com/package/lumox)
+[![npm version](https://img.shields.io/npm/v/lumox.svg)](https://www.npmjs.com/package/lumox) ![NPM Downloads](https://img.shields.io/npm/dm/lumox) ![npm bundle size](https://img.shields.io/bundlephobia/min/lumox) 
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Features
 
-- **Local-First Storage**: Encrypted data stored locally using SQLite compiled to WebAssembly
+- **Local-First Storage**: Encrypted chat data stored locally using SQLite compiled to WebAssembly
 - **Strong Encryption**: End-to-end encryption using the WebCrypto API
 - **Cross-Platform**: Works in browsers, Node.js, and React Native
 - **Modular Design**: Easily integrate specific components or use the full SDK
+- **Comprehensive Error Handling**: Detailed error codes and messages for effective debugging
+- **Configurable Logging**: Flexible logging system that adapts to your application needs
 
 ## Installation
 
@@ -74,7 +77,8 @@ The main client for interacting with the Lumox system.
 ```ts
 const lumox = new LumoxClient({
   storage: storageProvider,
-  crypto: cryptoProvider
+  crypto: cryptoProvider,
+  logger: loggerInstance // Optional
 });
 ```
 
@@ -101,7 +105,9 @@ const storage = new SqliteStorageProvider({
   // Optional: filename for persistent storage in browsers
   filename: '/sql/chat.db',
   // Optional: initial data to load
-  initialData: existingDbData
+  initialData: existingDbData,
+  // Optional: logger instance
+  logger: loggerInstance
 });
 ```
 
@@ -111,8 +117,15 @@ Interface for encryption implementations.
 
 ```ts
 // Default WebCrypto implementation
-const crypto = new WebCryptoProvider();
+const crypto = new WebCryptoProvider({
+  // Optional: logger instance
+  logger: loggerInstance
+});
 ```
+
+## Error Handling and Logging
+
+Lumox provides a comprehensive error handling and logging system. See [Error Handling and Logging](./ERROR_HANDLING.md) for details.
 
 ## Advanced Usage
 
@@ -158,6 +171,7 @@ await lumox.importData(new Uint8Array(importData.buffer), true);
 ### v1.0 (Current)
 - Local storage using SQLite-WASM
 - End-to-end encryption with WebCrypto
+- Comprehensive error handling and logging
 
 ### v1.5 (Planned)
 - Identity integration for key derivation
@@ -183,6 +197,9 @@ pnpm test
 
 # Run example
 pnpm example
+
+# Run error handling example
+pnpm example:errors
 ```
 
 ## Contributing

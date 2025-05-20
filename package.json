@@ -1,6 +1,6 @@
 {
   "name": "lumox",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Local-first encrypted storage engine",
   "type": "module",
   "main": "./dist/index.js",
@@ -9,21 +9,29 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
+      "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js",
+      "require": "./dist/core/index.cjs"
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "ERROR_HANDLING.md"
   ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
-    "example": "tsx examples/node-example.ts",
+    "example": "tsx --experimental-specifier-resolution=node examples/node-example.ts",
+    "example:errors": "tsx --experimental-specifier-resolution=node examples/error-handling-example.ts",
     "prepare": "pnpm run build",
-    "prepublishOnly": "pnpm run test && pnpm run build"
+    "prepublishOnly": "pnpm run test && pnpm run build",
+    "docs": "cp artifacts/readme-error-handling/content ERROR_HANDLING.md"
   },
   "keywords": [
     "encryption",
@@ -31,7 +39,8 @@
     "chat",
     "local-first",
     "sqlite",
-    "wasm"
+    "wasm",
+    "end-to-end-encryption"
   ],
   "author": {
     "name": "Kumar Anirudha",

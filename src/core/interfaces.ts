@@ -1,4 +1,4 @@
-import { EncryptedMessage, MessageId, UserId, EncryptedData } from './types.js';
+import { EncryptedMessage, MessageId, UserId, EncryptedData } from './types';
 
 export interface StorageProvider {
   initialize(): Promise<void>;

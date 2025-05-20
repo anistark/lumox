@@ -1,13 +1,11 @@
-// Core exports
-export * from './core/types.js';
-export * from './core/interfaces.js';
-export * from './core/errors.js';
+// Core
+export * from './core/index';
 
-// Storage exports
-export { SqliteStorageProvider, SqliteStorageOptions } from './storage/sqlite-provider.js';
+// Storage
+export * from './storage/sqlite-provider';
 
-// Crypto exports
-export { WebCryptoProvider } from './crypto/web-crypto.js';
+// Crypto
+export * from './crypto/web-crypto';
 
-// Client exports
-export { LumoxClient, LumoxConfig } from './client.js';
+// Client
+export * from './client';

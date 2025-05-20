@@ -9,6 +9,7 @@
     "outDir": "dist",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
     "lib": ["ES2020", "DOM"]
   },
   "include": ["src/**/*"],

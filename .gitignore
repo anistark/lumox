@@ -58,6 +58,7 @@ fixed/
 *.tmp
 *.temp
 .temp/
+NOTES.md
 
 # Cache directories
 .cache/

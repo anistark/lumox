@@ -1,4 +1,4 @@
-import { LumoxClient, SqliteStorageProvider, WebCryptoProvider } from '../src/index';
+import { LumoxClient, SqliteStorageProvider, WebCryptoProvider } from '../src';
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
 import fs from 'fs';
